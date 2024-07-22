@@ -22,28 +22,6 @@
         </div>
     </div>
     <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
-    <script>
-        function connectWallet() {
-            console.log("Connecting wallet...");
-        }
-
-        let countdown = 120;
-        const countdownElement = document.getElementById('countdown');
-        const progressElement = document.getElementById('progress');
-
-        function updateCountdown() {
-            countdown--;
-            countdownElement.textContent = `${countdown}秒后请重新连接`;
-            progressElement.style.width = `${(120 - countdown) / 120 * 100}%`;
-
-            if (countdown <= 0) {
-                clearInterval(countdownInterval);
-                countdownElement.textContent = "请重新连接";
-                progressElement.style.width = "100%";
-            }
-        }
-
-        const countdownInterval = setInterval(updateCountdown, 1000);
-    </script>
+    <script src="script.js" type="application/javascript"></script>
 </body>
 </html>
