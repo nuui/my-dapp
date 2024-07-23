@@ -76,6 +76,11 @@ button {
     bottom: 10px;
 }
 
+button:active,
+button:focus {
+    background-color: #0000FF; /* 保持亮蓝色 */
+}
+
 button:hover {
     background-color: #0056b3;
 }
