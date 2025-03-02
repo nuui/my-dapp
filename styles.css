@@ -1,94 +1,75 @@
+/* 引入 Orbitron 字体 */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+/* 整体样式 */
 body {
-    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
     height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #f0f2f5;
+    background: #000000 url('https://www.transparenttextures.com/patterns/stardust.png') repeat; /* 黑色背景带星空纹理 */
+    font-family: 'Orbitron', sans-serif; /* 更换为 Orbitron 字体 */
+    overflow: hidden;
 }
 
-.container {
-    background: white;
-    padding: 2em;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    width: 90%;
-    max-width: 500px;
-    text-align: center;
-    transition: transform 0.2s ease-in-out;
-}
-
-.bitcoin-logo {
-    width: 50px;
-    height: 50px;
-    margin-bottom: 1em;
-}
-
+/* 标题样式 */
 h1 {
-    font-size: 1.5em;
-    margin-bottom: 1em;
-    color: #333;
+    color: #9b59b6;
+    font-size: 2.5em;
+    text-align: center;
+    background: linear-gradient(45deg, #8e44ad, #3498db); /* 紫色到蓝色渐变 */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 10px; /* 缩小与下方文字的间距 */
 }
 
-.info-box {
-    background-color: #f8f8f8;
-    padding: 1em;
-    border-radius: 5px;
-    margin-bottom: 1.5em;
-    font-size: 1em;
-    color: #555;
+/* 段落样式 */
+p {
+    color: #d7bde2;
+    font-size: 1.2em;
+    text-align: center;
+    margin-top: 0; /* 移除顶部间距 */
+    margin-bottom: 20px; /* 缩小与下方按钮的间距 */
 }
 
-.payment-details {
-    font-size: 1em;
-    color: #555;
-    margin-bottom: 1em;
-    text-align: left;
-}
-
-.payment-details p {
-    margin: 0.5em 0;
-}
-
+/* 按钮样式 */
 button {
-    padding: 0.75em 1.5em;
-    font-size: 1em;
-    cursor: pointer;
-    background-color: #0000FF; /* 亮蓝色 */
+    padding: 12px 30px;
+    font-size: 1.2em;
+    background: linear-gradient(45deg, #8e44ad, #e74c3c); /* 紫色到红色渐变 */
     color: white;
     border: none;
-    border-radius: 5px;
-    width: 100%;
-    max-width: 400px;
-    transition: background-color 0.3s ease, transform 0.1s ease;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 0 15px rgba(142, 68, 173, 0.7);
 }
 
+/* 按钮悬停效果 */
 button:hover {
-    background-color: #0056b3; /* 深蓝色 */
+    transform: scale(1.1);
+    box-shadow: 0 0 25px rgba(142, 68, 173, 1);
 }
 
-button:active,
-button:focus {
-    background-color: #0000FF; /* 保持亮蓝色 */
-    transform: scale(0.98); /* 点击时轻微缩放 */
+/* 添加宇宙感的动画星星 */
+@keyframes twinkle {
+    0% { opacity: 0.2; }
+    50% { opacity: 1; }
+    100% { opacity: 0.2; }
 }
 
-@media (max-width: 600px) {
-    .container {
-        padding: 1em;
-    }
-
-    h1 {
-        font-size: 1.2em;
-    }
-
-    .info-box {
-        font-size: 0.9em;
-    }
-
-    button {
-        font-size: 0.9em;
-    }
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
+    opacity: 0.5;
+    animation: twinkle 5s infinite;
+    z-index: -1;
 }
