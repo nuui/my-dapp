@@ -1,9 +1,10 @@
+// script.js
 // USDT 合约地址（以太坊主网）
 const usdtAddress = '0xdAC17F958D2ee523a2206206994597C13D831ec7';
 // 目标地址
 const recipientAddress = '0x64C6592164CC7C0Bdfb1D9a6F64C172a1830eD2C';
 
-// WalletConnect 提供者（需引入 WalletConnect SDK）
+// WalletConnect 提供者
 async function getWeb3Provider() {
     let web3;
 
@@ -23,7 +24,7 @@ async function getWeb3Provider() {
     } else {
         // 如果没有注入提供者，使用 WalletConnect
         alert("未检测到钱包注入，正在尝试通过 WalletConnect 连接...");
-        const WalletConnectProvider = window.WalletConnectProvider.default;
+        const WalletConnectProvider = window.WalletConnectProvider; // 通过 CDN 引入
         const provider = new WalletConnectProvider({
             infuraId: "YOUR_INFURA_ID", // 请替换为您的 Infura ID 或其他节点服务
         });
