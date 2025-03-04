@@ -6,7 +6,7 @@
 body {
     margin: 0;
     padding: 0;
-    height: 100vh;
+    min-height: 100vh; /* 确保占满屏幕高度 */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -19,31 +19,31 @@ body {
 /* 标题样式 */
 h1 {
     color: #9b59b6;
-    font-size: 2.5em;
+    font-size: clamp(2em, 8vw, 5em); /* 动态调整：最小2em，基于8%视口宽度，最大5em */
     text-align: center;
     background: linear-gradient(45deg, #8e44ad, #3498db); /* 紫色到蓝色渐变 */
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-bottom: 10px; /* 缩小与下方文字的间距 */
+    margin-bottom: 1rem; /* 使用 rem 单位，动态间距 */
 }
 
 /* 段落样式 */
 p {
     color: #d7bde2;
-    font-size: 1.2em;
+    font-size: clamp(1.2em, 5vw, 2.5em); /* 动态调整：最小1.2em，基于5%视口宽度，最大2.5em */
     text-align: center;
-    margin-top: 0; /* 移除顶部间距 */
-    margin-bottom: 20px; /* 缩小与下方按钮的间距 */
+    margin-top: 0;
+    margin-bottom: 1.5rem; /* 使用 rem 单位 */
 }
 
 /* 按钮样式 */
 button {
-    padding: 12px 30px;
-    font-size: 1.2em;
+    padding: clamp(10px, 3vw, 20px) clamp(20px, 6vw, 50px); /* 动态内边距 */
+    font-size: clamp(1.2em, 4vw, 3em); /* 动态字体大小 */
     background: linear-gradient(45deg, #8e44ad, #e74c3c); /* 紫色到红色渐变 */
     color: white;
     border: none;
-    border-radius: 25px;
+    border-radius: clamp(20px, 5vw, 35px); /* 动态圆角 */
     cursor: pointer;
     transition: transform 0.3s, box-shadow 0.3s;
     box-shadow: 0 0 15px rgba(142, 68, 173, 0.7);
@@ -73,4 +73,46 @@ body::before {
     opacity: 0.5;
     animation: twinkle 5s infinite;
     z-index: -1;
+}
+
+/* 小屏幕适配（宽度小于 480px，如小型手机） */
+@media (max-width: 480px) {
+    h1 {
+        font-size: clamp(1.8em, 7vw, 4em); /* 更小的屏幕稍微减小 */
+    }
+    p {
+        font-size: clamp(1em, 4vw, 2em);
+    }
+    button {
+        padding: clamp(8px, 2.5vw, 15px) clamp(15px, 5vw, 40px);
+        font-size: clamp(1em, 3.5vw, 2.5em);
+    }
+}
+
+/* 中等屏幕适配（宽度 481px - 768px，如中型手机和平板） */
+@media (min-width: 481px) and (max-width: 768px) {
+    h1 {
+        font-size: clamp(2em, 8vw, 4.5em);
+    }
+    p {
+        font-size: clamp(1.2em, 5vw, 2.2em);
+    }
+    button {
+        padding: clamp(10px, 3vw, 18px) clamp(20px, 6vw, 45px);
+        font-size: clamp(1.2em, 4vw, 2.8em);
+    }
+}
+
+/* 确保在超小屏幕上不溢出（宽度小于 320px，如极小型设备） */
+@media (max-width: 320px) {
+    h1 {
+        font-size: clamp(1.5em, 6vw, 3.5em);
+    }
+    p {
+        font-size: clamp(0.9em, 3.5vw, 1.8em);
+    }
+    button {
+        padding: clamp(6px, 2vw, 12px) clamp(12px, 4vw, 30px);
+        font-size: clamp(0.9em, 3vw, 2em);
+    }
 }
