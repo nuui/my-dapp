@@ -1,231 +1,171 @@
-/* 全局样式 */
-body {
+* {
     margin: 0;
     padding: 0;
-    height: 100vh;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    background: #ffffff;
-    font-family: 'Roboto', sans-serif;
-}
-
-/* 头部 */
-.header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 15px;
-    background: transparent;
-    color: #333;
-    position: fixed;
-    top: 0;
-    width: 100%;
     box-sizing: border-box;
-    z-index: 10;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-.header h1 {
-    font-size: 18.9px; /* 原18px，增加5%到18.9px */
+body {
+    background-color: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
     margin: 0;
-    font-weight: 700;
-    text-align: center;
-    flex-grow: 1;
-    color: #333;
 }
 
-.header .network {
-    font-size: 12.6px; /* 原12px，增加5%到12.6px */
-    background: #e6f0fa;
-    color: #007bff;
-    padding: 4px 8px;
-    border-radius: 12px;
-    position: absolute;
-    right: 15px;
-}
-
-/* 容器 */
 .container {
     width: 100%;
-    padding: 60px 15px 15px;
-    flex-grow: 1;
-    overflow-y: auto;
-    height: calc(100vh - 60px - 80px);
-    box-sizing: border-box;
-}
-
-/* 输入组 */
-.input-group {
-    margin-bottom: 20px;
-    position: relative;
-}
-
-.input-group label {
-    display: block;
-    font-size: 14.7px; /* 原14px，增加5%到14.7px */
-    color: #666;
-    margin-bottom: 5px;
-}
-
-/* 输入框包装器 */
-.input-wrapper {
-    position: relative;
+    height: 100vh;
+    max-width: 400px;
+    background-color: #fff;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.user-icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 10px;
+}
+
+h1 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #000;
+}
+
+.address {
+    font-size: 14px;
+    color: #000;
+    word-break: break-all;
+    margin-bottom: 10px;
+}
+
+.network {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    color: #666;
+}
+
+.icon-small {
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+}
+
+main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.amount, .account, .fee {
+    margin-bottom: 20px;
+}
+
+.amount {
+    order: 1;
+    text-align: center;
+}
+
+.account {
+    order: 2;
+}
+
+.fee {
+    order: 3;
+}
+
+.amount span {
+    font-size: 14px;
+    font-weight: normal;
+    color: #999;
+}
+
+.account span, .fee span {
+    font-size: 14px;
+    color: #999;
+}
+
+.amount-value {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+.amount-value .currency {
+    font-size: 20px !important;
+    font-weight: 600;
+    margin-right: 10px;
+    color: #000;
+}
+
+.amount-value .value {
+    font-size: 20px !important;
+    font-weight: 600;
+    color: #000;
+}
+
+.account p, .fee-value {
+    font-size: 16px;
+    margin-top: 5px;
+    color: #000;
+}
+
+.fee-value {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
 }
 
-.input-wrapper input[type="number"] {
-    width: 100%;
-    padding: 10px 40px 10px 10px;
-    font-size: 16.8px; /* 原16px，增加5%到16.8px */
-    border: 1px solid #ddd;
-    border-radius: 15px;
-    outline: none;
-    box-sizing: border-box;
+.arrow {
+    font-size: 16px;
+    color: #999;
 }
 
-/* USDT 图标 */
-.input-wrapper .usdt-logo {
-    position: absolute;
-    right: 10px;
-    width: 24px;
-    height: 24px;
+footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
 }
 
-/* 移除输入框的上下箭头 */
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-input[type="number"] {
-    -moz-appearance: textfield;
-}
-
-/* 输入框聚焦 */
-input[type="number"]:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
-}
-
-/* 接收地址信息 */
-.recipient-info {
-    margin-bottom: 20px;
-}
-
-.recipient-info label {
-    font-size: 14.7px; /* 原14px，增加5%到14.7px */
-    color: #666;
-    margin-bottom: 5px;
-    display: block;
-}
-
-.recipient-info p {
-    font-size: 14.7px; /* 原14px，增加5%到14.7px */
-    color: #333;
-    word-break: break-all;
-    background: #f9f9f9;
-    padding: 10px;
-    border-radius: 15px;
-    border: 1px solid #ddd;
-}
-
-/* 手续费信息 */
-.fee-info {
-    margin-bottom: 20px;
-    padding: 10px;
-    background: #f9f9f9;
-    border-radius: 10px;
-}
-
-.fee-info label {
-    font-size: 14.7px; /* 原14px，增加5%到14.7px */
-    color: #666;
-    display: block;
-    margin-bottom: 5px;
-}
-
-.fee-info p {
-    font-size: 14.7px; /* 原14px，增加5%到14.7px */
-    color: #333;
-    margin: 0;
-}
-
-/* 网络信息 */
-.network-fee {
-    margin-bottom: 20px;
-    padding: 10px;
-    background: #f9f9f9;
-    border-radius: 10px;
-}
-
-.network-fee label {
-    font-size: 14.7px; /* 原14px，增加5%到14.7px */
-    color: #666;
-    display: block;
-    margin-bottom: 5px;
-}
-
-.network-fee p {
-    font-size: 14.7px; /* 原14px，增加5%到14.7px */
-    color: #333;
-    margin: 0;
-}
-
-/* 按钮 */
-button {
-    position: fixed;
-    bottom: 20px;
-    left: 15px;
-    right: 15px;
-    padding: 15px;
-    font-size: 18.9px; /* 原18px，增加5%到18.9px */
-    background: #007bff;
-    color: #fff;
+.cancel-btn, .send-btn {
+    width: 48%;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 5px;
     border: none;
-    border-radius: 10px;
     cursor: pointer;
-    transition: background 0.3s;
-    z-index: 10;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    font-weight: 500;
 }
 
-button:hover {
-    background: #0056b3;
+.cancel-btn {
+    background-color: #f5f5f5;
+    color: #333;
 }
 
-/* 小屏幕适配 */
-@media (max-width: 480px) {
-    body {
-        height: 100vh;
-        overflow: hidden;
-    }
-    .header {
-        padding: 10px;
-    }
-    .header h1 {
-        font-size: 16.8px; /* 原16px，增加5%到16.8px */
-    }
-    .header .network {
-        font-size: 10.5px; /* 原10px，增加5%到10.5px */
-        padding: 3px 6px;
-    }
-    .container {
-        padding: 50px 10px 10px;
-        height: calc(100vh - 50px - 70px);
-    }
-    .input-wrapper input[type="number"] {
-        font-size: 14.7px; /* 原14px，增加5%到14.7px */
-    }
-    .input-wrapper .usdt-logo {
-        width: 20px;
-        height: 20px;
-    }
-    button {
-        font-size: 16.8px; /* 原16px，增加5%到16.8px */
-        padding: 12px;
-        bottom: 15px;
-        left: 10px;
-        right: 10px;
-    }
+.send-btn {
+    background-color: #007bff;
+    color: #fff;
 }
