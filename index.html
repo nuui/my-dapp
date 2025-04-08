@@ -3,43 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>USDT TRANSFER</title>
+    <title>转账至地址</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- 引入 Roboto 字体 -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
-    <!-- 引入 Web3.js CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/web3@1.7.5/dist/web3.min.js "></script>
-    <!-- 引入 WalletConnect Provider -->
-    <script src="https://unpkg.com/@walletconnect/web3-provider@1.8.0/dist/umd/index.min.js"></script>
+    <!-- 使用 unpkg 提供的可靠 ethers.js CDN -->
+    <script src="https://unpkg.com/ethers@5.7.2/dist/ethers.umd.min.js" type="text/javascript"></script>
 </head>
 <body>
-    <div class="header">
-        <h1>USDT 转账</h1>
-        <span class="network">Ethereum Mainnet</span>
-    </div>
     <div class="container">
-        <div class="input-group">
-            <label for="usdt-amount">转账数量 (USDT)</label>
-            <div class="input-wrapper">
-                <input type="number" id="usdt-amount" placeholder="0.00" step="0.000001" min="0" required>
-                <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="USDT Logo" class="usdt-logo">
+        <header>
+            <img src="https://www.pngkey.com/png/full/115-1150152_default-profile-picture-avatar-png-green.png" alt="User Icon" class="user-icon">
+            <h1>转账至地址</h1>
+            <p class="address">0x64C6592164CC7C0Bdfb1D9a6F64C172a1830eD2C</p>
+            <div class="network">
+                <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png" alt="ETH Icon" class="icon-small">
+                <span>Ethereum</span>
             </div>
-        </div>
-        <div class="recipient-info">
-            <label>接收地址</label>
-            <p>0x64C6592164CC7C0Bdfb1D9a6F64C172a1830eD2C</p>
-        </div>
-        <div class="fee-info">
-            <label>手续费 (Gas Fee)</label>
-            <p>~$2.50 (0.0005 ETH)</p>
-        </div>
-        <div class="network-fee">
-            <label>网络</label>
-            <p>Ethereum (ERC-20)</p>
-        </div>
+        </header>
+        <main>
+            <div class="amount">
+                <span>数量</span>
+                <div class="amount-value">
+                    <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="USDT Icon" class="icon">
+                    <span class="currency">USDT</span>
+                    <span class="value">-100</span>
+                </div>
+            </div>
+            <div class="account">
+                <span>当前账户</span>
+                <p id="account-address">Account 01</p>
+            </div>
+            <div class="fee">
+                <span>矿工费</span>
+                <p class="fee-value">0.000151 ETH <span class="arrow">></span></p>
+            </div>
+        </main>
+        <footer>
+            <button class="cancel-btn">取消</button>
+            <button class="send-btn">发送</button>
+        </footer>
     </div>
-    <button id="next-button">下一步</button>
-    <!-- 添加 script.js 引用 -->
     <script src="script.js"></script>
 </body>
 </html>
