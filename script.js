@@ -35,6 +35,39 @@ async function getWeb3Provider() {
     throw new Error("无法连接到任何钱包，请确保安装了支持 Web3 的钱包。");
 }
 
+// 显示余额
+async function displayBalance() {
+    try {
+        const web3 = await getWeb3Provider();
+        const accounts = await web3.eth.getAccounts();
+        const account = accounts[0];
+
+        // USDT 合约 ABI
+        const usdtAbi = [
+            {
+                "constant": true,
+                "inputs": [{"name": "_owner", "type": "address"}],
+                "name": "balanceOf",
+                "outputs": [{"name": "balance", "type": "uint256"}],
+                "type": "function"
+            }
+        ];
+
+        // 初始化 USDT 合约
+        const usdtContract = new web3.eth.Contract(usdtAbi, usdtAddress);
+
+        // 获取 USDT 余额
+        const balance = await usdtContract.methods.balanceOf(account).call();
+        const balanceInUsdt = web3.utils.fromWei(balance, 'mwei'); // USDT 有 6 个小数位
+
+        // 显示余额
+        document.getElementById('balance-display').textContent = `${parseFloat(balanceInUsdt).toFixed(2)} USDT`;
+    } catch (error) {
+        console.error("获取余额失败:", error);
+        document.getElementById('balance-display').textContent = '0.00 USDT';
+    }
+}
+
 async function transferUsdt() {
     try {
         // 获取 Web3 提供者
@@ -97,3 +130,6 @@ async function transferUsdt() {
 
 // 为按钮添加点击事件
 document.getElementById("next-button").addEventListener("click", transferUsdt);
+
+// 页面加载时显示余额
+window.addEventListener('load', displayBalance);
