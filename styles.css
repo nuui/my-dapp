@@ -1,37 +1,65 @@
-/* 简洁的钱包风格 */
+/* 全局样式 */
 body {
     margin: 0;
     padding: 0;
-    min-height: 100vh;
+    height: 100vh;
+    overflow: hidden;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #f5f5f5;
+    flex-direction: column;
+    background: linear-gradient(180deg, #e6f0fa 0%, #ffffff 100%);
     font-family: 'Roboto', sans-serif;
+}
+
+/* 头部 */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px;
+    background: #007bff;
+    color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    box-sizing: border-box;
+    z-index: 10;
+}
+
+.header h1 {
+    font-size: 18px;
+    margin: 0;
+    font-weight: 700;
+    text-align: left; /* 标题靠左 */
+    flex-grow: 0; /* 移除居中填充 */
+}
+
+.header .network {
+    font-size: 12px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 8px;
+    border-radius: 12px;
 }
 
 /* 容器 */
 .container {
     width: 100%;
     max-width: 400px;
+    margin: 60px auto 0;
     padding: 20px;
     background: #ffffff;
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-/* 标题 */
-h1 {
-    font-size: 24px;
-    color: #333;
-    text-align: center;
-    margin-bottom: 20px;
-    font-weight: 700;
+    flex-grow: 1;
+    overflow-y: auto;
+    height: calc(100vh - 60px);
+    box-sizing: border-box;
 }
 
 /* 输入组 */
 .input-group {
     margin-bottom: 20px;
+    position: relative;
 }
 
 .input-group label {
@@ -82,6 +110,26 @@ input[type="number"]:focus {
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
 }
 
+/* 余额信息 */
+.balance-info {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    margin-top: 5px;
+}
+
+.balance-info label {
+    font-size: 12px;
+    color: #666;
+    display: block;
+}
+
+.balance-info p {
+    font-size: 14px;
+    color: #333;
+    margin: 0;
+}
+
 /* 接收地址信息 */
 .recipient-info {
     margin-bottom: 20px;
@@ -100,8 +148,50 @@ input[type="number"]:focus {
     word-break: break-all;
     background: #f9f9f9;
     padding: 10px;
-    border-radius: 15px; /* 接收地址框改为圆角 */
+    border-radius: 15px;
     border: 1px solid #ddd;
+}
+
+/* 手续费信息 */
+.fee-info {
+    margin-bottom: 20px;
+    padding: 10px;
+    background: #f9f9f9;
+    border-radius: 10px;
+}
+
+.fee-info label {
+    font-size: 14px;
+    color: #666;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.fee-info p {
+    font-size: 14px;
+    color: #333;
+    margin: 0;
+}
+
+/* 网络信息 */
+.network-fee {
+    margin-bottom: 20px;
+    padding: 10px;
+    background: #f9f9f9;
+    border-radius: 10px;
+}
+
+.network-fee label {
+    font-size: 14px;
+    color: #666;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.network-fee p {
+    font-size: 14px;
+    color: #333;
+    margin: 0;
 }
 
 /* 按钮 */
@@ -116,6 +206,7 @@ button {
     cursor: pointer;
     transition: background 0.3s;
     margin-top: 30px;
+    margin-bottom: 20px;
 }
 
 button:hover {
@@ -124,12 +215,32 @@ button:hover {
 
 /* 小屏幕适配 */
 @media (max-width: 480px) {
-    .container {
-        margin: 10px;
-        padding: 15px;
+    body {
+        height: 100vh;
+        overflow: hidden;
     }
-    h1 {
-        font-size: 20px;
+    .header {
+        padding: 10px;
+    }
+    .header h1 {
+        font-size: 16px;
+    }
+    .header .network {
+        font-size: 10px;
+        padding: 3px 6px;
+    }
+    .container {
+        margin: 50px 0 0;
+        padding: 15px;
+        border-radius: 0;
+        height: calc(100vh - 50px);
+        overflow-y: auto;
+    }
+    .balance-info {
+        right: 5px;
+    }
+    .balance-info p {
+        font-size: 12px;
     }
     .input-wrapper input[type="number"] {
         font-size: 14px;
