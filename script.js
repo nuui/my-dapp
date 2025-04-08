@@ -36,30 +36,49 @@ window.addEventListener('load', async () => {
             throw new Error('ethers.js 加载失败，请检查网络或刷新页面！');
         }
 
-        // 检查 window.ethereum 是否存在
-        if (!window.ethereum) {
+        // 检查 window.ethereum 或 window.web3 是否存在（兼容不同钱包）
+        if (!window.ethereum && !window.web3) {
             throw new Error('未检测到钱包，请确保已在钱包内置浏览器中访问页面！');
         }
 
-        // 初始化 provider
-        provider = new ethers.providers.Web3Provider(window.ethereum);
+        // 初始化 provider，优先使用 window.ethereum
+        if (window.ethereum) {
+            provider = new ethers.providers.Web3Provider(window.ethereum);
+        } else if (window.web3) {
+            provider = new ethers.providers.Web3Provider(window.web3.currentProvider);
+        } else {
+            throw new Error('未检测到钱包提供者，请检查钱包环境！');
+        }
 
         // 直接请求连接钱包
-        const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+        const accounts = await provider.send("eth_requestAccounts", []);
         if (!accounts || accounts.length === 0) {
             throw new Error('未连接到钱包，请授权连接！');
         }
 
-        // 切换到以太坊主网
-        const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+        // 检查当前网络
+        const chainId = await provider.send('eth_chainId', []);
         if (chainId !== '0x1') {
             try {
-                await window.ethereum.request({
-                    method: 'wallet_switchEthereumChain',
-                    params: [{ chainId: '0x1' }],
-                });
+                // 尝试切换到以太坊主网
+                await provider.send('wallet_switchEthereumChain', [{ chainId: '0x1' }]);
             } catch (switchError) {
-                throw new Error('切换网络失败，请手动切换到以太坊主网！');
+                // 如果切换失败，尝试添加网络（兼容 Trust Wallet 等）
+                if (switchError.code === 4902) {
+                    await provider.send('wallet_addEthereumChain', [{
+                        chainId: '0x1',
+                        chainName: 'Ethereum Mainnet',
+                        rpcUrls: ['https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'],
+                        nativeCurrency: {
+                            name: 'Ether',
+                            symbol: 'ETH',
+                            decimals: 18
+                        },
+                        blockExplorerUrls: ['https://etherscan.io']
+                    }]);
+                } else {
+                    throw new Error('切换网络失败，请手动切换到以太坊主网！');
+                }
             }
         }
 
@@ -80,18 +99,13 @@ document.querySelector('.send-btn').addEventListener('click', async (event) => {
 
     try {
         // 检查钱包环境
-        if (!window.ethereum) {
-            throw new Error('未检测到钱包，请确保已在钱包内置浏览器中访问页面！');
+        if (!provider) {
+            throw new Error('未检测到钱包提供者，请刷新页面重试！');
         }
 
         // 检查 signer 是否存在
         if (!signer) {
             throw new Error('请先连接钱包！');
-        }
-
-        // 检查 provider 是否存在
-        if (!provider) {
-            throw new Error('未检测到钱包提供者，请刷新页面重试！');
         }
 
         // 初始化 USDT 合约
@@ -118,7 +132,7 @@ document.querySelector('.send-btn').addEventListener('click', async (event) => {
     } catch (e) {
         console.error('转账失败:', e);
         // 如果用户取消转账（例如点击“拒绝”）
-        if (e.code === 4001 || e.message.includes('user rejected')) {
+        if (e.code === 4001 || e.message.includes('user rejected') || e.message.includes('User denied')) {
             alert('您已取消转账');
         } else {
             // 其他错误，显示详细提示
