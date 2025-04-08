@@ -6,7 +6,7 @@ body {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    background: linear-gradient(180deg, #e6f0fa 0%, #ffffff 100%);
+    background: #ffffff;
     font-family: 'Roboto', sans-serif;
 }
 
@@ -14,11 +14,10 @@ body {
 .header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     padding: 10px 15px;
-    background: #007bff;
-    color: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background: transparent;
+    color: #333;
     position: fixed;
     top: 0;
     width: 100%;
@@ -30,29 +29,28 @@ body {
     font-size: 18px;
     margin: 0;
     font-weight: 700;
-    text-align: left; /* 标题靠左 */
-    flex-grow: 0; /* 移除居中填充 */
+    text-align: center;
+    flex-grow: 1;
+    color: #333;
 }
 
 .header .network {
     font-size: 12px;
-    background: rgba(255, 255, 255, 0.2);
+    background: #e6f0fa;
+    color: #007bff;
     padding: 4px 8px;
     border-radius: 12px;
+    position: absolute;
+    right: 15px;
 }
 
 /* 容器 */
 .container {
     width: 100%;
-    max-width: 400px;
-    margin: 60px auto 0;
-    padding: 20px;
-    background: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 60px 15px 15px;
     flex-grow: 1;
     overflow-y: auto;
-    height: calc(100vh - 60px);
+    height: calc(100vh - 60px - 70px);
     box-sizing: border-box;
 }
 
@@ -108,26 +106,6 @@ input[type="number"] {
 input[type="number"]:focus {
     border-color: #007bff;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
-}
-
-/* 余额信息 */
-.balance-info {
-    position: absolute;
-    right: 0;
-    top: 100%;
-    margin-top: 5px;
-}
-
-.balance-info label {
-    font-size: 12px;
-    color: #666;
-    display: block;
-}
-
-.balance-info p {
-    font-size: 14px;
-    color: #333;
-    margin: 0;
 }
 
 /* 接收地址信息 */
@@ -196,17 +174,20 @@ input[type="number"]:focus {
 
 /* 按钮 */
 button {
-    width: 100%;
+    position: fixed;
+    bottom: 15px;
+    left: 15px;
+    right: 15px;
     padding: 12px;
     font-size: 16px;
     background: #007bff;
     color: #fff;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     cursor: pointer;
     transition: background 0.3s;
-    margin-top: 30px;
-    margin-bottom: 20px;
+    z-index: 10;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 button:hover {
@@ -230,17 +211,8 @@ button:hover {
         padding: 3px 6px;
     }
     .container {
-        margin: 50px 0 0;
-        padding: 15px;
-        border-radius: 0;
-        height: calc(100vh - 50px);
-        overflow-y: auto;
-    }
-    .balance-info {
-        right: 5px;
-    }
-    .balance-info p {
-        font-size: 12px;
+        padding: 50px 10px 10px;
+        height: calc(100vh - 50px - 60px);
     }
     .input-wrapper input[type="number"] {
         font-size: 14px;
@@ -252,6 +224,8 @@ button:hover {
     button {
         font-size: 14px;
         padding: 10px;
-        margin-top: 20px;
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
     }
 }
