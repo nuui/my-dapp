@@ -75,7 +75,7 @@ main {
 }
 
 .amount, .account, .fee {
-    margin-bottom: 5px; /* 进一步减小间距，让“当前账户”和“矿工费”更靠近 */
+    margin-bottom: 2px; /* 进一步减小间距，让“当前账户”和“矿工费”几乎挨在一起 */
 }
 
 .amount {
@@ -98,7 +98,7 @@ main {
 }
 
 .account span, .fee span {
-    font-size: 16px; /* 增大标题字体 */
+    font-size: 16px;
     color: #999;
 }
 
@@ -129,7 +129,7 @@ main {
 }
 
 .account p, .fee-value {
-    font-size: 18px; /* 增大内容字体 */
+    font-size: 18px;
     margin-top: 5px;
     color: #000;
 }
@@ -153,8 +153,8 @@ footer {
 
 .cancel-btn, .send-btn {
     width: 48%;
-    padding: 15px;
-    font-size: 18px;
+    padding: 18px; /* 增大按钮高度 */
+    font-size: 20px; /* 增大按钮字体 */
     border-radius: 5px;
     border: none;
     cursor: pointer;
@@ -190,15 +190,15 @@ footer {
     }
 
     .account span, .fee span {
-        font-size: 14px; /* 手机端稍减小，但仍比之前大 */
+        font-size: 14px;
     }
 
     .account p, .fee-value {
-        font-size: 16px; /* 手机端稍减小，但仍比之前大 */
+        font-size: 16px;
     }
 
     .cancel-btn, .send-btn {
-        padding: 12px;
-        font-size: 16px;
+        padding: 15px; /* 手机端稍减小，但仍比之前大 */
+        font-size: 18px;
     }
 }
