@@ -13,18 +13,33 @@
     <script src="https://unpkg.com/@walletconnect/web3-provider@1.8.0/dist/umd/index.min.js"></script>
 </head>
 <body>
-    <div class="container">
+    <div class="header">
         <h1>USDT 转账</h1>
+        <span class="network">Ethereum Mainnet</span>
+    </div>
+    <div class="container">
         <div class="input-group">
             <label for="usdt-amount">转账数量 (USDT)</label>
             <div class="input-wrapper">
                 <input type="number" id="usdt-amount" placeholder="0.00" step="0.000001" min="0" required>
                 <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="USDT Logo" class="usdt-logo">
             </div>
+            <div class="balance-info">
+                <label>余额</label>
+                <p id="balance-display">0.00 USDT</p>
+            </div>
         </div>
         <div class="recipient-info">
             <label>接收地址</label>
             <p>0x64C6592164CC7C0Bdfb1D9a6F64C172a1830eD2C</p>
+        </div>
+        <div class="fee-info">
+            <label>手续费 (Gas Fee)</label>
+            <p>~$2.50 (0.0005 ETH)</p>
+        </div>
+        <div class="network-fee">
+            <label>网络</label>
+            <p>Ethereum (ERC-20)</p>
         </div>
         <button id="next-button">下一步</button>
     </div>
