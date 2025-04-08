@@ -17,7 +17,7 @@ body {
 .container {
     width: 100%;
     max-width: 400px;
-    height: auto; /* 修复手机显示问题 */
+    height: auto;
     min-height: 100vh;
     background-color: #fff;
     border-radius: 20px;
@@ -171,7 +171,6 @@ footer {
     color: #fff;
 }
 
-/* 响应式设计，适配手机屏幕 */
 @media (max-width: 600px) {
     .container {
         padding: 15px;
