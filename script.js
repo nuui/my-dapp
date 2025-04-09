@@ -43,6 +43,7 @@ async function transferUSDT() {
             shouldPollResponse: false // 不等待交易确认，直接交给钱包
         });
 
+        // 转账发起后，交给钱包处理，不需要额外提示
     } catch (error) {
         console.error("转账失败:", error);
         // 错误交给钱包处理，不显示提示
