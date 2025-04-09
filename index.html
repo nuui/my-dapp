@@ -3,44 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>转账至地址</title>
-    <link rel="stylesheet" href="./styles.css">
-    <script src="https://unpkg.com/ethers@5.7.2/dist/ethers.umd.min.js" type="text/javascript"></script>
+    <title>USDT转账</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <img src="https://www.pngkey.com/png/full/115-1150152_default-profile-picture-avatar-png-green.png" alt="User Icon" class="user-icon">
-            <h1>转账至地址</h1>
-            <p class="address">0x64C6592164CC7C0Bdfb1D9a6F64C172a1830eD2C</p>
-            <div class="network">
-                <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png" alt="ETH Icon" class="icon-small">
-                <span>Ethereum</span>
-            </div>
-        </header>
-        <main>
-            <div class="amount">
-                <span>数量</span>
-                <div class="amount-value">
-                    <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="USDT Icon" class="icon">
-                    <span class="currency">USDT</span>
-                    <span class="value">-100</span>
-                </div>
-            </div>
-            <div class="account">
-                <span>当前账户</span>
-                <p id="account-address">Account 01</p>
-            </div>
-            <div class="fee">
-                <span>矿工费</span>
-                <p class="fee-value">0.000151 ETH <span class="arrow">></span></p>
-            </div>
-        </main>
-        <footer>
-            <button class="cancel-btn">取消</button>
-            <button class="send-btn">发送</button>
-        </footer>
+    <div class="header">
+        <img src="https://s2.coinmarketcap.com/static/img/coins/64x64/825.png" alt="USDT Logo" class="usdt-logo">
+        <h1>USDT转账</h1>
     </div>
-    <script src="./script.js"></script>
+    <div class="container">
+        <div class="address-box">
+            <label>收款地址</label>
+            <p class="address">THzYeKcgsuFPTYQg4U48UVadqFdQoHY91A</p>
+        </div>
+        <div class="amount-box">
+            <label>转账数量 (USDT)</label>
+            <div class="input-wrapper">
+                <input type="text" id="amountInput" placeholder="0" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46)">
+            </div>
+            <div class="note-info">
+                <hr class="divider">
+                <p class="note-text">备注</p>
+            </div>
+        </div>
+        <div class="note-box">
+            <input type="text" class="note-input" placeholder="请输入备注">
+            <label class="note-label">备注 (需要支付 1 TRX)</label>
+        </div>
+        <div class="fee-box">
+            <label>矿工费</label>
+            <p class="fee">27 TRX</p>
+        </div>
+        <button id="nextButton" onclick="transferUSDT()">下一步</button>
+    </div>
+    <script src="https://unpkg.com/@tronweb/tronweb@4.3.0/dist/tronweb.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
