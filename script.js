@@ -11,17 +11,23 @@ const usdtContractAddress = "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t";
 
 // 自动连接钱包
 window.addEventListener("load", async () => {
-    if (window.tronLink) {
+    // 检查是否支持波场的钱包（通过 window.tronWeb）
+    if (window.tronWeb) {
         try {
-            // 请求连接 TronLink 钱包
-            await window.tronLink.request({ method: "tron_requestAccounts" });
-            tronWeb = window.tronLink.tronWeb;
+            // 如果是 TronLink，尝试触发连接
+            if (window.tronLink) {
+                await window.tronLink.request({ method: "tron_requestAccounts" });
+                tronWeb = window.tronLink.tronWeb;
+            } else {
+                // 其他钱包（如 imToken、Trust Wallet）直接使用 window.tronWeb
+                tronWeb = window.tronWeb;
+            }
             walletAddress = tronWeb.defaultAddress.base58;
         } catch (error) {
             console.error("钱包连接错误:", error);
         }
     } else {
-        console.error("请安装 TronLink 或其他支持波场的钱包");
+        console.error("请安装 TronLink、imToken、Trust Wallet 或其他支持波场的钱包");
     }
 });
 
